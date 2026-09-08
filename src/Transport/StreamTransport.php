@@ -46,6 +46,7 @@ final class StreamTransport implements TransportInterface {
 			throw new TransportException('Unable to reach usage statistics server.');
 		}
 
+		/** @var list<string> $http_response_header */
 		return $this->createResponse($responseBody, $http_response_header);
 	}
 
