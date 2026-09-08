@@ -11,13 +11,16 @@ namespace LibreCode\UsageStatistics;
 
 use InvalidArgumentException;
 
-final class InstallationId {
+final class InstallationId
+{
     private const APPLICATION_PATTERN = '/^[A-Za-z0-9_.:-]+$/D';
 
-    private function __construct(public readonly string $value) {
+    private function __construct(public readonly string $value)
+    {
     }
 
-    public static function derive(string $application, string $localInstallationIdentifier): self {
+    public static function derive(string $application, string $localInstallationIdentifier): self
+    {
         if ($application === '' || strlen($application) > 128 || preg_match(self::APPLICATION_PATTERN, $application) !== 1) {
             throw new InvalidArgumentException('Application identifier is invalid.');
         }
@@ -30,7 +33,8 @@ final class InstallationId {
         return new self(hash('sha256', $input));
     }
 
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->value;
     }
 }

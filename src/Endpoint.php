@@ -11,10 +11,12 @@ namespace LibreCode\UsageStatistics;
 
 use InvalidArgumentException;
 
-final class Endpoint {
+final class Endpoint
+{
     public readonly string $url;
 
-    public function __construct(string $url) {
+    public function __construct(string $url)
+    {
         $parts = parse_url($url);
         if (!is_array($parts)
             || ($parts['scheme'] ?? null) !== 'https'
@@ -31,7 +33,8 @@ final class Endpoint {
         $this->url = rtrim($url, '/');
     }
 
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->url;
     }
 }

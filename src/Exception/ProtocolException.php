@@ -11,5 +11,6 @@ namespace LibreCode\UsageStatistics\Exception;
 
 use RuntimeException;
 
-final class ProtocolException extends RuntimeException {
+final class ProtocolException extends RuntimeException
+{
 }

@@ -11,8 +11,10 @@ namespace LibreCode\UsageStatistics\Transport;
 
 use LibreCode\UsageStatistics\Exception\TransportException;
 
-final class StreamTransport implements TransportInterface {
-    public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response {
+final class StreamTransport implements TransportInterface
+{
+    public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response
+    {
         if ($timeoutSeconds <= 0) {
             throw new TransportException('Timeout must be greater than zero.');
         }
@@ -33,7 +35,7 @@ final class StreamTransport implements TransportInterface {
             ],
         ]);
 
-        $previous = set_error_handler(static fn (): bool => true);
+        set_error_handler(static fn (): bool => true);
         try {
             $responseBody = file_get_contents($url, false, $context);
         } finally {

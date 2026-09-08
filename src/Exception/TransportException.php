@@ -11,5 +11,6 @@ namespace LibreCode\UsageStatistics\Exception;
 
 use RuntimeException;
 
-final class TransportException extends RuntimeException {
+final class TransportException extends RuntimeException
+{
 }

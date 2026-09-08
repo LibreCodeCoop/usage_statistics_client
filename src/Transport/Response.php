@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics\Transport;
 
-final class Response {
+final class Response
+{
     /** @param array<string,string> $headers */
     public function __construct(
         public readonly int $statusCode,
@@ -18,7 +19,8 @@ final class Response {
     ) {
     }
 
-    public function header(string $name): ?string {
+    public function header(string $name): ?string
+    {
         return $this->headers[strtolower($name)] ?? null;
     }
 }

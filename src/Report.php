@@ -11,7 +11,8 @@ namespace LibreCode\UsageStatistics;
 
 use InvalidArgumentException;
 
-final class Report {
+final class Report
+{
     public const PROTOCOL_VERSION = 1;
     private const IDENTIFIER_PATTERN = '/^[A-Za-z0-9_.:-]+$/D';
     private const MAX_METRICS = 256;
@@ -51,7 +52,8 @@ final class Report {
     }
 
     /** @return array{protocolVersion:int,application:string,installationId:string,schemaVersion:int,period:array{start:string,end:string},metrics:list<array{category:string,key:string,type:string,value:string|int|float|bool}>} */
-    public function toArray(): array {
+    public function toArray(): array
+    {
         return [
             'protocolVersion' => self::PROTOCOL_VERSION,
             'application' => $this->application,
@@ -62,7 +64,8 @@ final class Report {
         ];
     }
 
-    private static function assertIdentifier(string $value, string $field, int $maxLength): void {
+    private static function assertIdentifier(string $value, string $field, int $maxLength): void
+    {
         if ($value === '' || strlen($value) > $maxLength || preg_match(self::IDENTIFIER_PATTERN, $value) !== 1) {
             throw new InvalidArgumentException($field . ' is invalid.');
         }

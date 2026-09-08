@@ -11,7 +11,8 @@ namespace LibreCode\UsageStatistics;
 
 use InvalidArgumentException;
 
-final class Metric {
+final class Metric
+{
     private const IDENTIFIER_PATTERN = '/^[A-Za-z0-9_.:-]+$/D';
     private const MAX_CATEGORY_LENGTH = 128;
     private const MAX_KEY_LENGTH = 512;
@@ -27,11 +28,13 @@ final class Metric {
         self::assertIdentifier($key, 'Metric key', self::MAX_KEY_LENGTH);
     }
 
-    public static function integer(string $category, string $key, int $value): self {
+    public static function integer(string $category, string $key, int $value): self
+    {
         return new self($category, $key, 'integer', $value);
     }
 
-    public static function number(string $category, string $key, int|float $value): self {
+    public static function number(string $category, string $key, int|float $value): self
+    {
         if (is_float($value) && !is_finite($value)) {
             throw new InvalidArgumentException('Number metric must be finite.');
         }
@@ -39,11 +42,13 @@ final class Metric {
         return new self($category, $key, 'number', $value);
     }
 
-    public static function boolean(string $category, string $key, bool $value): self {
+    public static function boolean(string $category, string $key, bool $value): self
+    {
         return new self($category, $key, 'boolean', $value);
     }
 
-    public static function string(string $category, string $key, string $value): self {
+    public static function string(string $category, string $key, string $value): self
+    {
         if (strlen($value) > self::MAX_STRING_VALUE_LENGTH) {
             throw new InvalidArgumentException('String metric value exceeds 1024 bytes.');
         }
@@ -52,7 +57,8 @@ final class Metric {
     }
 
     /** @return array{category:string,key:string,type:string,value:string|int|float|bool} */
-    public function toArray(): array {
+    public function toArray(): array
+    {
         return [
             'category' => $this->category,
             'key' => $this->key,
@@ -61,11 +67,13 @@ final class Metric {
         ];
     }
 
-    public function identity(): string {
+    public function identity(): string
+    {
         return $this->category . "\0" . $this->key;
     }
 
-    private static function assertIdentifier(string $value, string $field, int $maxLength): void {
+    private static function assertIdentifier(string $value, string $field, int $maxLength): void
+    {
         if ($value === '' || strlen($value) > $maxLength || preg_match(self::IDENTIFIER_PATTERN, $value) !== 1) {
             throw new InvalidArgumentException($field . ' is invalid.');
         }

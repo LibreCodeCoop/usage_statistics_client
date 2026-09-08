@@ -14,7 +14,8 @@ use LibreCode\UsageStatistics\Exception\ProtocolException;
 use LibreCode\UsageStatistics\Exception\ServerRejectedException;
 use LibreCode\UsageStatistics\Transport\TransportInterface;
 
-final class Client {
+final class Client
+{
     public function __construct(
         private readonly TransportInterface $transport,
         private readonly Endpoint $endpoint,
@@ -25,7 +26,8 @@ final class Client {
         }
     }
 
-    public function submit(Report $report, ConsentState $consent): SubmissionResult {
+    public function submit(Report $report, ConsentState $consent): SubmissionResult
+    {
         if ($consent !== ConsentState::Enabled) {
             return SubmissionResult::SkippedWithoutConsent;
         }
@@ -72,7 +74,8 @@ final class Client {
     }
 
     /** @return array{0:?string,1:?string} */
-    private function parseError(string $body): array {
+    private function parseError(string $body): array
+    {
         try {
             $decoded = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException) {

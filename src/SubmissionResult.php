@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics;
 
-enum SubmissionResult: string {
+enum SubmissionResult: string
+{
     case Accepted = 'accepted';
     case SkippedWithoutConsent = 'skipped_without_consent';
 }

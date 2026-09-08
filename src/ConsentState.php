@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics;
 
-enum ConsentState: string {
+enum ConsentState: string
+{
     case Unknown = 'unknown';
     case Enabled = 'enabled';
     case Disabled = 'disabled';

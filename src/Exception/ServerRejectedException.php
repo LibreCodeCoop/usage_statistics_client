@@ -11,7 +11,8 @@ namespace LibreCode\UsageStatistics\Exception;
 
 use RuntimeException;
 
-final class ServerRejectedException extends RuntimeException {
+final class ServerRejectedException extends RuntimeException
+{
     public function __construct(
         public readonly int $statusCode,
         public readonly ?string $errorCode = null,
@@ -21,7 +22,8 @@ final class ServerRejectedException extends RuntimeException {
         parent::__construct($message);
     }
 
-    public function isTransient(): bool {
+    public function isTransient(): bool
+    {
         return $this->statusCode === 429 || $this->statusCode >= 500;
     }
 }
