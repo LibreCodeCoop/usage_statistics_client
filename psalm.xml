@@ -11,4 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <directory name="vendor-bin"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <MissingOverrideAttribute errorLevel="suppress"/>
+    </issueHandlers>
 </psalm>
