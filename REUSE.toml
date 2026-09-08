@@ -3,18 +3,20 @@
 
 version = 1
 SPDX-PackageName = "usage-statistics-client"
-SPDX-PackageDownloadLocation = "https://github.com/vitormattos/usage_statistics_client/"
+SPDX-PackageDownloadLocation = "https://github.com/LibreCodeCoop/usage_statistics_client/"
 
 default-license = "AGPL-3.0-or-later"
 default-copyright = "2026 LibreCode coop and contributors"
 
 [[annotations]]
 path = [
-    ".gitignore",
     "composer.json",
-    "phpcs.xml.dist",
-    "phpstan.neon",
-    "phpunit.xml.dist"
+    "composer.lock",
+    "phpunit.xml.dist",
+    "phpmd.xml",
+    "psalm.xml",
+    "vendor-bin/**/composer.json",
+    "vendor-bin/**/composer.lock"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 LibreCode coop and contributors"

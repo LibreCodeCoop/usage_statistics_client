@@ -1,21 +1,19 @@
 {
-    "name": "vitormattos/usage-statistics-client",
+    "name": "librecodecoop/usage-statistics-client",
     "description": "Framework-agnostic PHP client for the Usage Statistics Protocol.",
     "type": "library",
     "license": "AGPL-3.0-or-later",
     "keywords": [
-        "telemetry",
-        "usage-statistics",
+        "nextcloud",
         "privacy",
-        "php"
+        "telemetry",
+        "usage-statistics"
     ],
     "require": {
-        "php": ">=8.1"
+        "php": "^8.2"
     },
     "require-dev": {
-        "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.0",
-        "squizlabs/php_codesniffer": "^3.13"
+        "bamarni/composer-bin-plugin": "^1.9"
     },
     "autoload": {
         "psr-4": {
@@ -24,30 +22,55 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LibreCode\\UsageStatistics\\Tests\\": "tests/"
+            "LibreCode\\UsageStatistics\\Tests\\": "tests/Unit/"
         }
     },
     "scripts": {
-        "lint": "find src tests -name '*.php' -print0 | xargs -0 -n1 php -l",
-        "test": "phpunit --colors=always --fail-on-warning --fail-on-risky",
-        "test:coverage": [
-            "@php -r \"is_dir('build') || mkdir('build', 0777, true);\"",
-            "XDEBUG_MODE=coverage phpunit --coverage-text --coverage-clover build/coverage.xml"
-        ],
-        "phpstan": "phpstan analyse -c phpstan.neon",
-        "phpcs": "phpcs -q",
+        "lint": "find src tests -name \\*.php -not -path './vendor/*' -not -path './vendor-bin/*' -print0 | xargs -0 -n1 php -l",
+        "cs:check": "php vendor-bin/coding-standard/vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php vendor-bin/coding-standard/vendor/bin/php-cs-fixer fix",
+        "phpcs": "php vendor-bin/coding-standard/vendor/bin/phpcs -q",
+        "phpstan": "php vendor-bin/phpstan/vendor/bin/phpstan analyse -c phpstan.neon",
+        "psalm": "php vendor-bin/psalm/vendor/bin/psalm --no-cache --threads=$(nproc)",
+        "phpmd": "php vendor-bin/phpmd/vendor/bin/phpmd src text phpmd.xml",
+        "mutation:test": "php vendor-bin/infection/vendor/bin/infection --configuration=infection.json5",
+        "test:unit": "php vendor-bin/phpunit/vendor/bin/phpunit -c phpunit.xml.dist --testsuite unit --no-coverage --colors=always --fail-on-warning --fail-on-risky --display-deprecations --display-phpunit-deprecations",
+        "test:coverage": "XDEBUG_MODE=coverage php vendor-bin/phpunit/vendor/bin/phpunit -c phpunit.xml.dist --coverage-text --coverage-clover build/coverage.xml",
         "qa": [
             "@lint",
+            "@cs:check",
             "@phpcs",
             "@phpstan",
-            "@test"
+            "@psalm",
+            "@phpmd",
+            "@test:unit"
+        ],
+        "post-install-cmd": [
+            "@composer bin all install --ansi",
+            "composer dump-autoload -o"
+        ],
+        "post-update-cmd": [
+            "composer dump-autoload"
         ]
     },
+    "extra": {
+        "bamarni-bin": {
+            "bin-links": true,
+            "forward-command": true
+        }
+    },
     "support": {
-        "issues": "https://github.com/vitormattos/usage_statistics_client/issues",
-        "source": "https://github.com/vitormattos/usage_statistics_client"
+        "issues": "https://github.com/LibreCodeCoop/usage_statistics_client/issues",
+        "source": "https://github.com/LibreCodeCoop/usage_statistics_client"
     },
     "config": {
-        "sort-packages": true
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2"
+        }
     }
 }

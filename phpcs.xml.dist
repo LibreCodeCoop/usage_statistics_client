@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
-<ruleset name="Usage Statistics Client">
-    <description>PSR-12 coding standard for the Usage Statistics Client.</description>
+<!--
+SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<ruleset name="UsageStatisticsClient">
+    <description>PHP_CodeSniffer rules for the usage statistics client.</description>
+    <arg name="colors"/>
+    <arg value="sp"/>
     <file>src</file>
-    <file>tests</file>
-    <arg name="extensions" value="php"/>
-    <arg name="parallel" value="8"/>
-    <arg name="warning-severity" value="0"/>
+    <file>tests/Unit</file>
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>vendor-bin/*</exclude-pattern>
     <rule ref="PSR12"/>
 </ruleset>
