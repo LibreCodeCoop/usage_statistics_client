@@ -11,19 +11,17 @@ namespace LibreCode\UsageStatistics\Exception;
 
 use RuntimeException;
 
-final class ServerRejectedException extends RuntimeException
-{
-    public function __construct(
-        public readonly int $statusCode,
-        public readonly ?string $errorCode = null,
-        string $message = 'Usage statistics server rejected the report.',
-        public readonly ?string $retryAfter = null,
-    ) {
-        parent::__construct($message);
-    }
+final class ServerRejectedException extends RuntimeException {
+	public function __construct(
+		public readonly int $statusCode,
+		public readonly ?string $errorCode = null,
+		string $message = 'Usage statistics server rejected the report.',
+		public readonly ?string $retryAfter = null,
+	) {
+		parent::__construct($message);
+	}
 
-    public function isTransient(): bool
-    {
-        return $this->statusCode === 429 || $this->statusCode >= 500;
-    }
+	public function isTransient(): bool {
+		return $this->statusCode === 429 || $this->statusCode >= 500;
+	}
 }

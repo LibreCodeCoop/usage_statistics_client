@@ -13,13 +13,11 @@ use LibreCode\UsageStatistics\Exception\TransportException;
 use LibreCode\UsageStatistics\Transport\StreamTransport;
 use PHPUnit\Framework\TestCase;
 
-final class StreamTransportTest extends TestCase
-{
-    public function testRejectsNonPositiveTimeoutBeforeNetworkAccess(): void
-    {
-        $this->expectException(TransportException::class);
-        $this->expectExceptionMessage('Timeout must be greater than zero.');
+final class StreamTransportTest extends TestCase {
+	public function testRejectsNonPositiveTimeoutBeforeNetworkAccess(): void {
+		$this->expectException(TransportException::class);
+		$this->expectExceptionMessage('Timeout must be greater than zero.');
 
-        (new StreamTransport())->request('POST', 'https://stats.example/api/v1/reports', [], '{}', 0.0);
-    }
+		(new StreamTransport())->request('POST', 'https://stats.example/api/v1/reports', [], '{}', 0.0);
+	}
 }

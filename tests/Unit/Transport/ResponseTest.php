@@ -12,18 +12,15 @@ namespace LibreCode\UsageStatistics\Tests\Transport;
 use LibreCode\UsageStatistics\Transport\Response;
 use PHPUnit\Framework\TestCase;
 
-final class ResponseTest extends TestCase
-{
-    public function testHeaderLookupIsCaseInsensitive(): void
-    {
-        $response = new Response(429, '', ['Retry-After' => '60']);
+final class ResponseTest extends TestCase {
+	public function testHeaderLookupIsCaseInsensitive(): void {
+		$response = new Response(429, '', ['Retry-After' => '60']);
 
-        self::assertSame('60', $response->header('retry-after'));
-        self::assertSame('60', $response->header('RETRY-AFTER'));
-    }
+		self::assertSame('60', $response->header('retry-after'));
+		self::assertSame('60', $response->header('RETRY-AFTER'));
+	}
 
-    public function testMissingHeaderReturnsNull(): void
-    {
-        self::assertNull((new Response(200, ''))->header('retry-after'));
-    }
+	public function testMissingHeaderReturnsNull(): void {
+		self::assertNull((new Response(200, ''))->header('retry-after'));
+	}
 }

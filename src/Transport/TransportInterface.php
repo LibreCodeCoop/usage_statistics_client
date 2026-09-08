@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics\Transport;
 
-interface TransportInterface
-{
-    /** @param array<string,string> $headers */
-    public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response;
+interface TransportInterface {
+	/** @param array<string,string> $headers */
+	public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response;
 }
