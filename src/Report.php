@@ -39,9 +39,6 @@ final class Report
 
         $seen = [];
         foreach ($metrics as $metric) {
-            if (!$metric instanceof Metric) {
-                throw new InvalidArgumentException('Every report metric must be a Metric instance.');
-            }
             $identity = $metric->identity();
             if (isset($seen[$identity])) {
                 throw new InvalidArgumentException('Duplicate metric category/key pair.');

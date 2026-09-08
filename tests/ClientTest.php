@@ -45,6 +45,9 @@ final class ClientTest extends TestCase
         self::assertSame(2.5, $transport->timeout);
         self::assertSame('application/json', $transport->headers['Content-Type']);
         $payload = json_decode($transport->body, true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($payload)) {
+            throw new \UnexpectedValueException('Expected serialized report to be an array.');
+        }
         self::assertSame(1, $payload['protocolVersion']);
         self::assertSame('libresign', $payload['application']);
     }

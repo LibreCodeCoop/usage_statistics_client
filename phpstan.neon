@@ -4,3 +4,8 @@ parameters:
         - src
         - tests
     tmpDir: .phpstan-cache
+
+    excludePaths:
+        analyse:
+            - tests/scoping-smoke.php
+            - tests/coverage-threshold.php
