@@ -10,6 +10,7 @@ default-copyright = "2026 LibreCode coop and contributors"
 
 [[annotations]]
 path = [
+    ".gitignore",
     "composer.json",
     "phpcs.xml.dist",
     "phpstan.neon",

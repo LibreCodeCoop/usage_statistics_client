@@ -28,7 +28,8 @@ Validate namespace prefixing:
 
 ```bash
 rm -rf build/scoped
-vendor/bin/php-scoper add-prefix --prefix=UsageStatisticsClientScoped --output-dir=build/scoped --force src
+composer global require humbug/php-scoper:^0.18.17
+"$(composer global config bin-dir --absolute)/php-scoper" add-prefix --prefix=UsageStatisticsClientScoped --output-dir=build/scoped --force src
 php tests/scoping-smoke.php
 ```
 

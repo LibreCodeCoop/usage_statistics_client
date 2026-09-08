@@ -21,7 +21,11 @@ final class InstallationId
 
     public static function derive(string $application, string $localInstallationIdentifier): self
     {
-        if ($application === '' || strlen($application) > 128 || preg_match(self::APPLICATION_PATTERN, $application) !== 1) {
+        if (
+            $application === ''
+            || strlen($application) > 128
+            || preg_match(self::APPLICATION_PATTERN, $application) !== 1
+        ) {
             throw new InvalidArgumentException('Application identifier is invalid.');
         }
         if ($localInstallationIdentifier === '') {

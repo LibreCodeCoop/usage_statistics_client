@@ -20,7 +20,6 @@ use LibreCode\UsageStatistics\Report;
 use LibreCode\UsageStatistics\ReportingPeriod;
 use LibreCode\UsageStatistics\SubmissionResult;
 use LibreCode\UsageStatistics\Transport\Response;
-use LibreCode\UsageStatistics\Transport\TransportInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
@@ -96,32 +95,5 @@ final class ClientTest extends TestCase
             new ReportingPeriod(new DateTimeImmutable('2026-08-01T00:00:00Z'), new DateTimeImmutable('2026-09-01T00:00:00Z')),
             [Metric::integer('usage', 'requests_completed', 72)],
         );
-    }
-}
-
-final class RecordingTransport implements TransportInterface
-{
-    public int $calls = 0;
-    public string $method = '';
-    public string $url = '';
-    /** @var array<string,string> */
-    public array $headers = [];
-    public string $body = '';
-    public float $timeout = 0.0;
-
-    public function __construct(private readonly Response $response)
-    {
-    }
-
-    public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response
-    {
-        ++$this->calls;
-        $this->method = $method;
-        $this->url = $url;
-        $this->headers = $headers;
-        $this->body = $body;
-        $this->timeout = $timeoutSeconds;
-
-        return $this->response;
     }
 }

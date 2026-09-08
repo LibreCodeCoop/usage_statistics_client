@@ -18,7 +18,8 @@ final class Endpoint
     public function __construct(string $url)
     {
         $parts = parse_url($url);
-        if (!is_array($parts)
+        if (
+            !is_array($parts)
             || ($parts['scheme'] ?? null) !== 'https'
             || !isset($parts['host'])
             || $parts['host'] === ''
@@ -27,7 +28,9 @@ final class Endpoint
             || isset($parts['query'])
             || isset($parts['fragment'])
         ) {
-            throw new InvalidArgumentException('Report endpoint must be an HTTPS URL without credentials, query, or fragment.');
+            throw new InvalidArgumentException(
+                'Report endpoint must be an HTTPS URL without credentials, query, or fragment.',
+            );
         }
 
         $this->url = rtrim($url, '/');

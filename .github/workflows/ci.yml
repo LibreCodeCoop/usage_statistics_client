@@ -96,8 +96,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
+      - name: Install PHP-Scoper
+        run: composer global require --no-interaction humbug/php-scoper:^0.18.17
+
       - name: Prefix package namespace
-        run: vendor/bin/php-scoper add-prefix --prefix=UsageStatisticsClientScoped --output-dir=build/scoped --force src
+        run: "$(composer global config bin-dir --absolute)/php-scoper" add-prefix --prefix=UsageStatisticsClientScoped --output-dir=build/scoped --force src
 
       - name: Load scoped package
         run: php tests/scoping-smoke.php
