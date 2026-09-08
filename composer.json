@@ -30,7 +30,10 @@
     "scripts": {
         "lint": "find src tests -name '*.php' -print0 | xargs -0 -n1 php -l",
         "test": "phpunit --colors=always --fail-on-warning --fail-on-risky",
-        "test:coverage": "XDEBUG_MODE=coverage phpunit --coverage-text --coverage-clover build/coverage.xml",
+        "test:coverage": [
+            "@php -r \"is_dir('build') || mkdir('build', 0777, true);\"",
+            "XDEBUG_MODE=coverage phpunit --coverage-text --coverage-clover build/coverage.xml"
+        ],
         "phpstan": "phpstan analyse -c phpstan.neon",
         "phpcs": "phpcs -q",
         "qa": [

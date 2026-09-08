@@ -26,6 +26,7 @@ final class RecordingTransport implements TransportInterface
     {
     }
 
+    /** @param array<string,string> $headers */
     public function request(
         string $method,
         string $url,

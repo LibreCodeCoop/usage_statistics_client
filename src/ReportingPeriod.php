@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics;
 
+use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
@@ -35,8 +36,10 @@ final class ReportingPeriod
     public static function monthContaining(DateTimeImmutable $instant): self
     {
         $utc = $instant->setTimezone(new DateTimeZone('UTC'));
-        $start = $utc->modify('first day of this month')->setTime(0, 0, 0, 0);
-        $end = $start->modify('first day of next month');
+        $start = $utc
+            ->setDate((int)$utc->format('Y'), (int)$utc->format('m'), 1)
+            ->setTime(0, 0, 0, 0);
+        $end = $start->add(new DateInterval('P1M'));
 
         return new self($start, $end);
     }

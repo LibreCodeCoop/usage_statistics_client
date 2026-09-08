@@ -13,6 +13,7 @@ use LibreCode\UsageStatistics\Exception\TransportException;
 
 final class StreamTransport implements TransportInterface
 {
+    /** @param array<string,string> $headers */
     public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response
     {
         if ($timeoutSeconds <= 0) {
