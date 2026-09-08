@@ -11,12 +11,20 @@ namespace LibreCode\UsageStatistics\Transport;
 
 final class Response
 {
+    /** @var array<string,string> */
+    public readonly array $headers;
+
     /** @param array<string,string> $headers */
     public function __construct(
         public readonly int $statusCode,
         public readonly string $body,
-        public readonly array $headers = [],
+        array $headers = [],
     ) {
+        $normalized = [];
+        foreach ($headers as $name => $value) {
+            $normalized[strtolower($name)] = $value;
+        }
+        $this->headers = $normalized;
     }
 
     public function header(string $name): ?string

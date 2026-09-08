@@ -44,7 +44,6 @@ final class Client
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'User-Agent' => 'usage-statistics-client/1',
             ],
             $payload,
             $this->timeoutSeconds,
