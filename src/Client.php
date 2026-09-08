@@ -83,9 +83,12 @@ final class Client {
 			return [null, null];
 		}
 
+		$error = $decoded['error'] ?? null;
+		$message = $decoded['message'] ?? null;
+
 		return [
-			is_string($decoded['error'] ?? null) ? $decoded['error'] : null,
-			is_string($decoded['message'] ?? null) ? $decoded['message'] : null,
+			is_string($error) ? $error : null,
+			is_string($message) ? $message : null,
 		];
 	}
 }
