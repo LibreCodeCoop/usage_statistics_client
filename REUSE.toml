@@ -15,8 +15,7 @@ path = [
     "phpunit.xml.dist",
     "phpmd.xml",
     "psalm.xml",
-    "vendor-bin/**/composer.json",
-    "vendor-bin/**/composer.lock"
+    "vendor-bin/**/composer.json"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 LibreCode coop and contributors"

@@ -7,19 +7,17 @@
 
 declare(strict_types=1);
 
-namespace LibreCode\UsageStatistics\Tests;
+namespace LibreCode\UsageStatistics\Tests\Transport;
 
-use LibreCode\UsageStatistics\Exception\TransportException;
+use InvalidArgumentException;
 use LibreCode\UsageStatistics\Transport\StreamTransport;
 use PHPUnit\Framework\TestCase;
 
 final class StreamTransportTest extends TestCase
 {
-    public function testRejectsNonPositiveTimeout(): void
+    public function testRejectsNonPositiveTimeoutBeforeNetworkAccess(): void
     {
-        $transport = new StreamTransport();
-
-        $this->expectException(TransportException::class);
-        $transport->request('POST', 'https://example.invalid', [], '{}', 0.0);
+        $this->expectException(InvalidArgumentException::class);
+        (new StreamTransport())->request('POST', 'https://stats.example/api/v1/reports', [], '{}', 0.0);
     }
 }

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace LibreCode\UsageStatistics\Tests;
+namespace LibreCode\UsageStatistics\Tests\Transport;
 
 use LibreCode\UsageStatistics\Transport\Response;
 use PHPUnit\Framework\TestCase;
@@ -20,5 +20,10 @@ final class ResponseTest extends TestCase
 
         self::assertSame('60', $response->header('retry-after'));
         self::assertSame('60', $response->header('RETRY-AFTER'));
+    }
+
+    public function testMissingHeaderReturnsNull(): void
+    {
+        self::assertNull((new Response(200, ''))->header('retry-after'));
     }
 }
