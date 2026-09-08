@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics\Tests\Transport;
 
-use InvalidArgumentException;
+use LibreCode\UsageStatistics\Exception\TransportException;
 use LibreCode\UsageStatistics\Transport\StreamTransport;
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +17,9 @@ final class StreamTransportTest extends TestCase
 {
     public function testRejectsNonPositiveTimeoutBeforeNetworkAccess(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TransportException::class);
+        $this->expectExceptionMessage('Timeout must be greater than zero.');
+
         (new StreamTransport())->request('POST', 'https://stats.example/api/v1/reports', [], '{}', 0.0);
     }
 }
