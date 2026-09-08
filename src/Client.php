@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics;
 
+use InvalidArgumentException;
 use JsonException;
 use LibreCode\UsageStatistics\Exception\ProtocolException;
 use LibreCode\UsageStatistics\Exception\ServerRejectedException;
@@ -22,7 +23,7 @@ final class Client
         private readonly float $timeoutSeconds = 5.0,
     ) {
         if ($timeoutSeconds <= 0) {
-            throw new \InvalidArgumentException('Timeout must be greater than zero.');
+            throw new InvalidArgumentException('Timeout must be greater than zero.');
         }
     }
 

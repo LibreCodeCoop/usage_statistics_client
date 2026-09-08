@@ -45,7 +45,7 @@ final class Report
             }
             $seen[$identity] = true;
         }
-        $this->metrics = array_values($metrics);
+        $this->metrics = $metrics;
     }
 
     /** @return array{protocolVersion:int,application:string,installationId:string,schemaVersion:int,period:array{start:string,end:string},metrics:list<array{category:string,key:string,type:string,value:string|int|float|bool}>} */

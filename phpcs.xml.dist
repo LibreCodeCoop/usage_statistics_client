@@ -4,12 +4,19 @@ SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <ruleset name="UsageStatisticsClient">
-    <description>PHP_CodeSniffer rules for the usage statistics client.</description>
+    <description>Complementary PHP_CodeSniffer checks; Nextcloud coding-standard is the formatting authority.</description>
     <arg name="colors"/>
     <arg value="sp"/>
     <file>src</file>
     <file>tests/Unit</file>
     <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>vendor-bin/*</exclude-pattern>
-    <rule ref="PSR12"/>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="160"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 </ruleset>

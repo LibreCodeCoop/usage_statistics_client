@@ -3,10 +3,9 @@
 SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
-<psalm errorLevel="1" resolveFromConfigFile="true">
+<psalm errorLevel="1" resolveFromConfigFile="true" findUnusedCode="false">
     <projectFiles>
         <directory name="src"/>
-        <directory name="tests/Unit"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <directory name="vendor-bin"/>

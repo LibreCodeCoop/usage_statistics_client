@@ -8,7 +8,7 @@
     },
     "phpUnit": {
         "configDir": ".",
-        "customPath": "vendor-bin/phpunit/vendor/bin/phpunit"
+        "customPath": "vendor/bin/phpunit"
     },
     "minMsi": 90,
     "minCoveredMsi": 90,

@@ -36,6 +36,7 @@ final class StreamTransport implements TransportInterface
             ],
         ]);
 
+        $http_response_header = null;
         set_error_handler(static fn (): bool => true);
         try {
             $responseBody = file_get_contents($url, false, $context);
@@ -44,29 +45,41 @@ final class StreamTransport implements TransportInterface
         }
 
         /** @var list<string>|null $http_response_header */
-        if ($responseBody === false || !isset($http_response_header)) {
+        if ($responseBody === false || $http_response_header === null) {
             throw new TransportException('Unable to reach usage statistics server.');
         }
 
+        return $this->createResponse($responseBody, $http_response_header);
+    }
+
+    /**
+     * @param list<string> $headerLines
+     */
+    private function createResponse(string $body, array $headerLines): Response
+    {
         $statusCode = null;
         $responseHeaders = [];
-        foreach ($http_response_header as $line) {
+
+        foreach ($headerLines as $line) {
             if (preg_match('/^HTTP\/\S+\s+(\d{3})\b/', $line, $matches) === 1) {
                 $statusCode = (int)$matches[1];
                 $responseHeaders = [];
                 continue;
             }
+
             $separator = strpos($line, ':');
-            if ($separator !== false) {
-                $name = strtolower(trim(substr($line, 0, $separator)));
-                $responseHeaders[$name] = trim(substr($line, $separator + 1));
+            if ($separator === false) {
+                continue;
             }
+
+            $name = strtolower(trim(substr($line, 0, $separator)));
+            $responseHeaders[$name] = trim(substr($line, $separator + 1));
         }
 
         if ($statusCode === null) {
             throw new TransportException('Server response did not contain an HTTP status line.');
         }
 
-        return new Response($statusCode, $responseBody, $responseHeaders);
+        return new Response($statusCode, $body, $responseHeaders);
     }
 }
