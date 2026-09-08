@@ -11,7 +11,7 @@ namespace LibreCode\UsageStatistics\Transport;
 
 use LibreCode\UsageStatistics\Exception\TransportException;
 
-final class StreamTransport implements TransportInterface {
+final class StreamTransport {
 	/** @param array<string,string> $headers */
 	public function request(string $method, string $url, array $headers, string $body, float $timeoutSeconds): Response {
 		if ($timeoutSeconds <= 0) {
@@ -42,7 +42,6 @@ final class StreamTransport implements TransportInterface {
 			restore_error_handler();
 		}
 
-		/** @var list<string>|null $http_response_header */
 		if ($responseBody === false || $http_response_header === null) {
 			throw new TransportException('Unable to reach usage statistics server.');
 		}
@@ -50,9 +49,7 @@ final class StreamTransport implements TransportInterface {
 		return $this->createResponse($responseBody, $http_response_header);
 	}
 
-	/**
-	 * @param list<string> $headerLines
-	 */
+	/** @param array<int,string> $headerLines */
 	private function createResponse(string $body, array $headerLines): Response {
 		$statusCode = null;
 		$responseHeaders = [];

@@ -15,8 +15,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class EndpointTest extends TestCase {
-	public function testAcceptsHttpsEndpoint(): void {
-		self::assertSame('https://stats.example/api/v1/reports', (string)new Endpoint('https://stats.example/api/v1/reports/'));
+	public function testAcceptsHttpsEndpointAndRemovesTrailingSlash(): void {
+		$endpoint = new Endpoint('https://stats.example/api/v1/reports/');
+
+		self::assertSame('https://stats.example/api/v1/reports', (string)$endpoint);
 	}
 
 	#[DataProvider('invalidEndpoints')]
@@ -28,7 +30,10 @@ final class EndpointTest extends TestCase {
 	/** @return iterable<string,array{string}> */
 	public static function invalidEndpoints(): iterable {
 		yield 'http' => ['http://stats.example/api/v1/reports'];
+		yield 'user' => ['https://user@stats.example/api/v1/reports'];
 		yield 'credentials' => ['https://user:secret@stats.example/api/v1/reports'];
 		yield 'query' => ['https://stats.example/api/v1/reports?token=x'];
+		yield 'fragment' => ['https://stats.example/api/v1/reports#section'];
+		yield 'missing host' => ['https:///api/v1/reports'];
 	}
 }

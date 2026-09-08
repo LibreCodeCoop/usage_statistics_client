@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics\Tests;
 
+use InvalidArgumentException;
 use LibreCode\UsageStatistics\InstallationId;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class InstallationIdTest extends TestCase {
@@ -23,5 +25,30 @@ final class InstallationIdTest extends TestCase {
 		self::assertNotSame($first, $otherApp);
 		self::assertMatchesRegularExpression('/^[a-f0-9]{64}$/', $first);
 		self::assertStringNotContainsString('local-instance-id', $first);
+	}
+
+	public function testAcceptsMaximumApplicationLength(): void {
+		self::assertMatchesRegularExpression(
+			'/^[a-f0-9]{64}$/',
+			(string)InstallationId::derive(str_repeat('a', 128), 'local-instance-id'),
+		);
+	}
+
+	#[DataProvider('invalidApplications')]
+	public function testRejectsInvalidApplications(string $application): void {
+		$this->expectException(InvalidArgumentException::class);
+		InstallationId::derive($application, 'local-instance-id');
+	}
+
+	/** @return iterable<string,array{string}> */
+	public static function invalidApplications(): iterable {
+		yield 'empty' => [''];
+		yield 'too long' => [str_repeat('a', 129)];
+		yield 'invalid alphabet' => ['libresign app'];
+	}
+
+	public function testRejectsEmptyLocalInstallationIdentifier(): void {
+		$this->expectException(InvalidArgumentException::class);
+		InstallationId::derive('libresign', '');
 	}
 }
