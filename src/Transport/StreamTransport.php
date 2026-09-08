@@ -42,7 +42,7 @@ final class StreamTransport implements TransportInterface {
 			restore_error_handler();
 		}
 
-		if ($responseBody === false || $http_response_header === null) {
+		if ($responseBody === false) {
 			throw new TransportException('Unable to reach usage statistics server.');
 		}
 
