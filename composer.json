@@ -1,0 +1,76 @@
+{
+    "name": "librecodecoop/usage-statistics-client",
+    "description": "Framework-agnostic PHP client for the Usage Statistics Protocol.",
+    "type": "library",
+    "license": "AGPL-3.0-or-later",
+    "keywords": [
+        "nextcloud",
+        "privacy",
+        "telemetry",
+        "usage-statistics"
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "LibreCode\\UsageStatistics\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LibreCode\\UsageStatistics\\Tests\\": "tests/Unit/"
+        }
+    },
+    "scripts": {
+        "lint": "find src tests -name \\*.php -not -path './vendor/*' -not -path './vendor-bin/*' -print0 | xargs -0 -n1 php -l",
+        "cs:check": "php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix",
+        "phpcs": "phpcs -q",
+        "phpstan": "phpstan analyse -c phpstan.neon",
+        "psalm": "psalm --no-cache --threads=$(nproc)",
+        "phpmd": "phpmd src text phpmd.xml",
+        "mutation:test": "infection --configuration=infection.json5",
+        "test:unit": "phpunit -c phpunit.xml.dist --testsuite unit --no-coverage --colors=always --fail-on-warning --fail-on-risky --display-deprecations --display-phpunit-deprecations",
+        "test:coverage": "XDEBUG_MODE=coverage phpunit -c phpunit.xml.dist --coverage-text --coverage-clover build/coverage.xml",
+        "qa": [
+            "@lint",
+            "@cs:check",
+            "@phpcs",
+            "@phpstan",
+            "@psalm",
+            "@phpmd",
+            "@test:unit"
+        ],
+        "post-install-cmd": [
+            "@composer bin all install --ansi",
+            "composer dump-autoload -o"
+        ],
+        "post-update-cmd": [
+            "composer dump-autoload"
+        ]
+    },
+    "extra": {
+        "bamarni-bin": {
+            "bin-links": true,
+            "forward-command": true
+        }
+    },
+    "support": {
+        "issues": "https://github.com/LibreCodeCoop/usage_statistics_client/issues",
+        "source": "https://github.com/LibreCodeCoop/usage_statistics_client"
+    },
+    "config": {
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2"
+        }
+    }
+}

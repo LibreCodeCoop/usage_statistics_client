@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+version = 1
+SPDX-PackageName = "usage-statistics-client"
+SPDX-PackageDownloadLocation = "https://github.com/LibreCodeCoop/usage_statistics_client/"
+
+default-license = "AGPL-3.0-or-later"
+default-copyright = "2026 LibreCode coop and contributors"
+
+[[annotations]]
+path = [
+    "composer.json",
+    "composer.lock",
+    "phpunit.xml.dist",
+    "phpmd.xml",
+    "psalm.xml",
+    "vendor-bin/**/composer.json"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 LibreCode coop and contributors"
+SPDX-License-Identifier = "AGPL-3.0-or-later"

@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Namespace scoping
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  scoping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer global require --no-interaction humbug/php-scoper:^0.18.17
+      - run: '"$(composer global config bin-dir --absolute)/php-scoper" add-prefix --prefix=OCA\\Libresign\\Vendor --output-dir=build/scoped --force src'
+      - run: php tests/scoping-smoke.php
