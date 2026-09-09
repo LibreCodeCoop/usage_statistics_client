@@ -10,8 +10,8 @@
         "configDir": ".",
         "customPath": "vendor/bin/phpunit"
     },
-    "minMsi": 85,
-    "minCoveredMsi": 85,
+    "minMsi": 90,
+    "minCoveredMsi": 90,
     "mutators": {
         "@default": true
     }
