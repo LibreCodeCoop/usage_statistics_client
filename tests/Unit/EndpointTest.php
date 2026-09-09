@@ -4,7 +4,6 @@
  * SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
 declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics\Tests;
@@ -34,6 +33,7 @@ final class EndpointTest extends TestCase {
 		yield 'credentials' => ['https://user:secret@stats.example/api/v1/reports'];
 		yield 'query' => ['https://stats.example/api/v1/reports?token=x'];
 		yield 'fragment' => ['https://stats.example/api/v1/reports#section'];
-		yield 'missing host' => ['https:///api/v1/reports'];
+		yield 'invalid absolute url without host' => ['https:///api/v1/reports'];
+		yield 'scheme with relative path and no host' => ['https:api/v1/reports'];
 	}
 }
