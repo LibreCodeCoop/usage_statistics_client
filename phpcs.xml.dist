@@ -11,6 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <file>tests/Unit</file>
     <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>vendor-bin/*</exclude-pattern>
+    <rule ref="PSR1"/>
     <rule ref="Generic.Files.LineLength">
         <properties>
             <property name="lineLimit" value="120"/>
