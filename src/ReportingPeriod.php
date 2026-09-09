@@ -4,7 +4,6 @@
  * SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
 declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics;
@@ -26,8 +25,11 @@ final class ReportingPeriod {
 		$this->end = $end->setTimezone($utc);
 
 		$duration = $this->end->getTimestamp() - $this->start->getTimestamp();
-		if ($duration <= 0 || $duration > self::MAX_SECONDS) {
-			throw new InvalidArgumentException('Reporting period must be positive and no longer than 31 days.');
+		if ($duration <= 0) {
+			throw new InvalidArgumentException('Reporting period end must be after start.');
+		}
+		if ($duration > self::MAX_SECONDS) {
+			throw new InvalidArgumentException('Reporting period must not exceed 31 days.');
 		}
 	}
 
