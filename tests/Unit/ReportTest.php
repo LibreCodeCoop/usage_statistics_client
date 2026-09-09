@@ -88,7 +88,13 @@ final class ReportTest extends TestCase {
 	public function testRejectsInvalidSchemaVersion(int $version): void {
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('Schema version must be a positive integer.');
-		new Report('libresign', str_repeat('a', 64), $version, $this->period(), [Metric::integer('usage', 'count', 1)]);
+		new Report(
+			'libresign',
+			str_repeat('a', 64),
+			$version,
+			$this->period(),
+			[Metric::integer('usage', 'count', 1)],
+		);
 	}
 
 	/** @return iterable<string,array{int}> */
@@ -111,10 +117,20 @@ final class ReportTest extends TestCase {
 	}
 
 	#[DataProvider('invalidReportIdentifiers')]
-	public function testRejectsInvalidReportIdentifiers(string $application, string $installationId, string $message): void {
+	public function testRejectsInvalidReportIdentifiers(
+		string $application,
+		string $installationId,
+		string $message,
+	): void {
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage($message);
-		new Report($application, $installationId, 1, $this->period(), [Metric::integer('usage', 'count', 1)]);
+		new Report(
+			$application,
+			$installationId,
+			1,
+			$this->period(),
+			[Metric::integer('usage', 'count', 1)],
+		);
 	}
 
 	/** @return iterable<string,array{string,string,string}> */
