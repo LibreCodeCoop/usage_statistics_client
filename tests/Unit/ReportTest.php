@@ -4,7 +4,6 @@
  * SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
 declare(strict_types=1);
 
 namespace LibreCode\UsageStatistics\Tests;
@@ -14,6 +13,7 @@ use InvalidArgumentException;
 use LibreCode\UsageStatistics\Metric;
 use LibreCode\UsageStatistics\Report;
 use LibreCode\UsageStatistics\ReportingPeriod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ReportTest extends TestCase {
@@ -65,11 +65,13 @@ final class ReportTest extends TestCase {
 		}
 
 		$this->expectException(InvalidArgumentException::class);
+		$this->expectExceptionMessage('Report must contain between 1 and 256 metrics.');
 		new Report('libresign', str_repeat('a', 64), 1, $this->period(), $metrics);
 	}
 
 	public function testRejectsDuplicateMetricIdentityRegardlessOfValue(): void {
 		$this->expectException(InvalidArgumentException::class);
+		$this->expectExceptionMessage('Duplicate metric category/key pair.');
 		new Report('libresign', str_repeat('a', 64), 1, $this->period(), [
 			Metric::integer('usage', 'count', 1),
 			Metric::integer('usage', 'count', 2),
@@ -78,12 +80,21 @@ final class ReportTest extends TestCase {
 
 	public function testRejectsEmptyMetricSet(): void {
 		$this->expectException(InvalidArgumentException::class);
+		$this->expectExceptionMessage('Report must contain between 1 and 256 metrics.');
 		new Report('libresign', str_repeat('a', 64), 1, $this->period(), []);
 	}
 
-	public function testRejectsSchemaVersionZero(): void {
+	#[DataProvider('invalidSchemaVersions')]
+	public function testRejectsInvalidSchemaVersion(int $version): void {
 		$this->expectException(InvalidArgumentException::class);
-		new Report('libresign', str_repeat('a', 64), 0, $this->period(), [Metric::integer('usage', 'count', 1)]);
+		$this->expectExceptionMessage('Schema version must be a positive integer.');
+		new Report('libresign', str_repeat('a', 64), $version, $this->period(), [Metric::integer('usage', 'count', 1)]);
+	}
+
+	/** @return iterable<string,array{int}> */
+	public static function invalidSchemaVersions(): iterable {
+		yield 'zero' => [0];
+		yield 'negative' => [-1];
 	}
 
 	public function testAcceptsMaximumLengthIdentifiers(): void {
@@ -99,9 +110,19 @@ final class ReportTest extends TestCase {
 		self::assertSame(128, strlen($report->installationId));
 	}
 
-	public function testRejectsIdentifierOutsideProtocolAlphabet(): void {
+	#[DataProvider('invalidReportIdentifiers')]
+	public function testRejectsInvalidReportIdentifiers(string $application, string $installationId, string $message): void {
 		$this->expectException(InvalidArgumentException::class);
-		new Report('libresign app', str_repeat('a', 64), 1, $this->period(), [Metric::integer('usage', 'count', 1)]);
+		$this->expectExceptionMessage($message);
+		new Report($application, $installationId, 1, $this->period(), [Metric::integer('usage', 'count', 1)]);
+	}
+
+	/** @return iterable<string,array{string,string,string}> */
+	public static function invalidReportIdentifiers(): iterable {
+		yield 'application alphabet' => ['libresign app', str_repeat('a', 64), 'Application is invalid.'];
+		yield 'application too long' => [str_repeat('a', 129), str_repeat('b', 64), 'Application is invalid.'];
+		yield 'installation id alphabet' => ['libresign', 'installation id', 'Installation ID is invalid.'];
+		yield 'installation id too long' => ['libresign', str_repeat('b', 129), 'Installation ID is invalid.'];
 	}
 
 	private function period(): ReportingPeriod {
