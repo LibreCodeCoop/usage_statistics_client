@@ -28,7 +28,11 @@ final class ReportingPeriodTest extends TestCase {
 	}
 
 	#[DataProvider('calendarMonths')]
-	public function testCreatesCalendarMonthAtUtcBoundary(string $instant, string $expectedStart, string $expectedEnd): void {
+	public function testCreatesCalendarMonthAtUtcBoundary(
+		string $instant,
+		string $expectedStart,
+		string $expectedEnd,
+	): void {
 		$period = ReportingPeriod::monthContaining(new DateTimeImmutable($instant));
 
 		self::assertSame($expectedStart, $period->toArray()['start']);
