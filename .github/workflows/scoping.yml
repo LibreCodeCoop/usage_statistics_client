@@ -21,5 +21,5 @@ jobs:
           coverage: none
       - run: composer install --no-interaction --prefer-dist
       - run: composer global require --no-interaction humbug/php-scoper:^0.18.17
-      - run: '"$(composer global config bin-dir --absolute)/php-scoper" add-prefix --prefix=UsageStatisticsClientScoped --output-dir=build/scoped --force src'
+      - run: '"$(composer global config bin-dir --absolute)/php-scoper" add-prefix --prefix=OCA\\Libresign\\Vendor --output-dir=build/scoped --force src'
       - run: php tests/scoping-smoke.php
