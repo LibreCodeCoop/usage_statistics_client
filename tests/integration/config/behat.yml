@@ -12,8 +12,8 @@ default:
         - '%paths.base%/../features'
 
   extensions:
-    PhpBuiltin\\Server:
+    PhpBuiltin\Server:
       workers: 2
-    jarnaiz\\JUnitFormatter\\JUnitFormatterExtension:
+    jarnaiz\JUnitFormatter\JUnitFormatterExtension:
       filename: report.xml
       outputDir: '%paths.base%/../output/'
