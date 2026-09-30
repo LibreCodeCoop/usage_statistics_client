@@ -84,14 +84,19 @@ jobs:
           BEHAT_ROOT_DIR: ../../build/nextcloud
           BEHAT_RUN_AS: runner
           BEHAT_VERBOSE: ${{ runner.debug }}
-        run: composer run behat
+        run: |
+          mkdir -p output
+          set -o pipefail
+          composer run behat 2>&1 | tee output/compatibility.log
 
       - name: Upload Behat results
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: server-compatibility-results
-          path: tests/integration/output/
+          path: |
+            tests/integration/output/
+            build/nextcloud/data/nextcloud.log
           if-no-files-found: ignore
           retention-days: 30
 
