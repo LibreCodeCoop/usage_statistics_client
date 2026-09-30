@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 Feature: Usage Statistics Protocol v1 client/server compatibility
 
   Scenario: the real client submits a report that the server stores and aggregates
