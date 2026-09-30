@@ -1,0 +1,100 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Server compatibility
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: server-compatibility-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout client
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Checkout Nextcloud
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          repository: nextcloud/server
+          ref: stable36
+          path: build/nextcloud
+          submodules: true
+
+      - name: Checkout Usage Statistics Server
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          repository: LibreCodeCoop/usage_statistics_server
+          ref: fix/protocol-v1-direct-ingestion
+          path: build/nextcloud/apps/usage_statistics_server
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        with:
+          php-version: '8.3'
+          extensions: bz2, ctype, curl, dom, fileinfo, gd, iconv, intl, json, libxml, mbstring, openssl, pcntl, posix, session, simplexml, sockets, sqlite, pdo_sqlite, xmlreader, xmlwriter, zip, zlib
+          coverage: none
+          ini-file: development
+          ini-values: disable_functions=
+
+      - name: Install server dependencies
+        working-directory: build/nextcloud/apps/usage_statistics_server
+        run: |
+          composer remove nextcloud/ocp --dev --no-scripts
+          composer install --no-dev --no-scripts --prefer-dist --no-progress
+
+      - name: Install compatibility test dependencies
+        working-directory: tests/integration
+        run: composer install --prefer-dist --no-progress
+
+      - name: Set up Nextcloud
+        working-directory: build/nextcloud
+        run: |
+          mkdir data
+          ./occ maintenance:install \
+            --verbose \
+            --database=sqlite \
+            --database-name=nextcloud \
+            --admin-user admin \
+            --admin-pass admin
+          ./occ app:enable --force usage_statistics_server
+          ./occ config:system:set auth.bruteforce.protection.enabled --value false --type boolean
+          ./occ config:system:set ratelimit.protection.enabled --value false --type boolean
+          ./occ config:system:set debug --value true --type boolean
+
+      - name: Run client/server compatibility test
+        working-directory: tests/integration
+        env:
+          BEHAT_ROOT_DIR: ../../build/nextcloud
+          BEHAT_RUN_AS: runner
+          BEHAT_VERBOSE: ${{ runner.debug }}
+        run: composer run behat
+
+      - name: Upload Behat results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: server-compatibility-results
+          path: tests/integration/output/
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Print Nextcloud logs
+        if: always()
+        run: cat build/nextcloud/data/nextcloud.log 2>/dev/null || true
