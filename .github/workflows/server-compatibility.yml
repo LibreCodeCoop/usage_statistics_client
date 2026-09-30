@@ -41,7 +41,7 @@ jobs:
         with:
           persist-credentials: false
           repository: LibreCodeCoop/usage_statistics_server
-          ref: fix/protocol-v1-direct-ingestion
+          ref: main
           path: build/nextcloud/apps/usage_statistics_server
 
       - name: Set up PHP
