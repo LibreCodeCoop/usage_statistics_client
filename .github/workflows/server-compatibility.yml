@@ -32,7 +32,7 @@ jobs:
         with:
           persist-credentials: false
           repository: nextcloud/server
-          ref: stable36
+          ref: stable35
           path: build/nextcloud
           submodules: true
 
